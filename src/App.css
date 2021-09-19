@@ -1,38 +1,34 @@
-.App {
-  text-align: center;
+.GameBoard {
+    width: 1100px;
+    background: linear-gradient(to bottom, #57c1eb 0%,#246fa8 100%);;
+    margin: 0 auto;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+
+.CloudsSection {
+    position: relative;
+    width: 100%;
+    height: 500px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.CloudElement {
+    position: absolute;
+    /*width: 100px;*/
+    /*height: 100px;*/
+    display: flex;
+    background-image: url("./img/cloud.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center 10%;
+    text-align: center;
+    vertical-align: baseline;
+
+    padding: 0 16px;
+    box-sizing: border-box;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.CloudElement__Text {
+    line-height: 5.6em;
+    min-width: 100px;
+    white-space: nowrap;
 }
