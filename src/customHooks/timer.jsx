@@ -15,7 +15,7 @@ export const useTimer = (cb) => {
         if (cb) {
           cb();
         }
-      }, 400);
+      }, 1000);
     }
   }, [cb]);
 

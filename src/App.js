@@ -5,6 +5,8 @@ import { useTimer } from "./customHooks/timer";
 import CloudsSection from "./components/cloudsSection/cloudsSection";
 import { useClouds } from "./customHooks/clouds";
 
+const enterKey = 13;
+
 function App() {
   const [isGameStarted, setIsGameStarted] = useState(false);
   let cb = () => {
@@ -16,22 +18,24 @@ function App() {
     stopGenerateClouds,
     activeClouds,
     resetClouds,
-    destroyCloud,
+    destroyCloudByLabel,
+    destroyCloudById,
   } = useClouds();
   const [playerText, setPlayerText] = useState("");
+  const [points, setPoints] = useState(0);
 
   const handlePlayerTextChange = useCallback((event) => {
     setPlayerText(event.target.value);
   }, []);
 
-  const handleClearPlayerText = useCallback(() => {
+  const handleClearPlayerText = useCallback((points) => {
+    setPoints((currentVal) => currentVal + points);
     setPlayerText("");
   });
 
   const handleKeyPress = useCallback((event) => {
-    if (event.which === 13) {
-      destroyCloud(playerText, handleClearPlayerText);
-      console.log("hit enter: ");
+    if (event.which === enterKey) {
+      destroyCloudByLabel(playerText, handleClearPlayerText);
     }
   });
 
@@ -54,6 +58,12 @@ function App() {
     resetClouds();
   }, [resetClouds, resetTimer, stopGenerateClouds]);
 
+  const autoDestroyCloud = useCallback((id) => {
+    destroyCloudById(id, () => {
+      console.log("auto destroyed: ");
+    });
+  });
+
   return (
     <main className="GameBoard">
       <section className="TimeSection">
@@ -64,7 +74,7 @@ function App() {
         <div>slider</div>
       </section>
       <section className="StatsSection">
-        <span>Points: 20</span>
+        <span>Points: {points}</span>
         <span>Lives: 3</span>
       </section>
 
@@ -77,7 +87,10 @@ function App() {
         </>
       )}
 
-      <CloudsSection activeClouds={activeClouds} />
+      <CloudsSection
+        activeClouds={activeClouds}
+        autoDestroyCloud={autoDestroyCloud}
+      />
 
       <label htmlFor="playerText">Cloud name: </label>
       <input

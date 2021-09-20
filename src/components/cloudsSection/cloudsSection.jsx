@@ -1,20 +1,19 @@
 import React from "react";
-import { motion } from "framer-motion";
+import Cloud from "./cloud";
 
-const CloudsSection = ({ activeClouds }) => {
+const CloudsSection = ({ activeClouds, autoDestroyCloud }) => {
+  console.log("activeClouds: ", activeClouds);
+
   return (
     <section className="CloudsSection">
       {activeClouds.map((cloud) => {
         return (
-          <motion.div
-            style={{ top: `${cloud.styleTop}px` }}
-            className={"CloudElement"}
-            animate={{ x: 900 }}
-            transition={{ duration: 15, ease: "linear" }}
+          <Cloud
             key={cloud.id}
-          >
-            <span className={"CloudElement__Text"}>{cloud.label}</span>
-          </motion.div>
+            cloud={cloud}
+            destroyAfter={cloud.lifeTime}
+            autoDestroyCloud={autoDestroyCloud}
+          />
         );
       })}
     </section>

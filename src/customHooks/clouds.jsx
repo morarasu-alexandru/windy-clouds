@@ -36,6 +36,7 @@ export const useClouds = () => {
       label: cloudLabel,
       id: uuidv4(),
       styleTop: generateRandomNumber(400),
+      lifeTime: 15000,
     };
 
     setActiveClouds((currentVal) => [...currentVal, newCloud]);
@@ -71,10 +72,31 @@ export const useClouds = () => {
     setTimeout(initialTimeout);
   }, []);
 
-  const destroyCloud = useCallback(
+  const destroyCloudByLabel = useCallback(
     (value, cb) => {
-      if (activeClouds.some((elem) => elem.label === value)) {
-        setActiveClouds(activeClouds.filter((elem) => elem.label !== value));
+      if (activeClouds.some((elem, idx) => elem.label === value)) {
+        setActiveClouds((currentVal) => {
+          const elemIdx = activeClouds.findIndex(
+            (elem) => elem.label === value
+          );
+          const newActiveClouds = [...activeClouds];
+          newActiveClouds.splice(elemIdx, 1);
+          currentVal.splice(elemIdx, 1);
+
+          return currentVal;
+        });
+        cb(value.length);
+      }
+    },
+    [activeClouds]
+  );
+
+  const destroyCloudById = useCallback(
+    (value, cb) => {
+      if (activeClouds.some((elem) => elem.id === value)) {
+        setActiveClouds((currentVal) =>
+          currentVal.filter((cloud) => cloud.id !== value)
+        );
         cb();
       }
     },
@@ -85,7 +107,8 @@ export const useClouds = () => {
     resetClouds,
     startGenerateClouds,
     stopGenerateClouds,
-    destroyCloud,
+    destroyCloudByLabel,
+    destroyCloudById,
     activeClouds,
   };
 };
