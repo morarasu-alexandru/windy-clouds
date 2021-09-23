@@ -5,12 +5,8 @@ import Expire from "../expire/expire";
 const Cloud = ({ cloud, destroyAfter, autoDestroyCloud }) => {
   useEffect(() => {}, []);
 
-  const handleAutoDestroy = useCallback(() => {
-    autoDestroyCloud(cloud.id);
-  });
-
   return (
-    <Expire delay={destroyAfter} cb={handleAutoDestroy}>
+    <Expire delay={destroyAfter}>
       <motion.div
         style={{ top: `${cloud.styleTop}px` }}
         className={"CloudElement"}

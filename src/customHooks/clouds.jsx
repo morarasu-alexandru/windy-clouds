@@ -18,19 +18,33 @@ const initialTimeout = 1500;
 export const useClouds = () => {
   const [cloudsStock, setCloudsStock] = useState(initialClouds);
   const [activeClouds, setActiveClouds] = useState([]);
+  const [clouds, setClouds] = useState({ stock: initialClouds, active: [] });
   const [isGeneratingClouds, setIsGeneratingClouds] = useState(false);
   const intervalRef = useRef(null);
   const [timeout, setTimeout] = useState(initialTimeout);
 
-  const generateRandomCloud = useCallback(() => {
-    const randomIndex = generateRandomNumber(cloudsStock.length - 1);
-    const cloudLabel = cloudsStock[randomIndex];
+  const destroyCloudById = useCallback((value) => {
+    setActiveClouds((currentValue) => {
+      if (currentValue.some((elem) => elem.id === value)) {
+        return currentValue.filter((cloud) => cloud.id !== value);
+      }
 
-    if (cloudsStock.length === 1) {
-      setCloudsStock(initialClouds);
-    } else {
-      setCloudsStock(cloudsStock.filter((elem) => elem !== cloudLabel));
-    }
+      return currentValue;
+    });
+  }, []);
+
+  const generateRandomCloud = useCallback(() => {
+    let randomIndex = null;
+    let cloudLabel = null;
+
+    setCloudsStock((currentVal) => {
+      randomIndex = generateRandomNumber(currentVal.length - 1);
+      cloudLabel = currentVal[randomIndex];
+
+      return currentVal.length === 1
+        ? initialClouds
+        : currentVal.filter((elem) => elem !== cloudLabel);
+    });
 
     const newCloud = {
       label: cloudLabel,
@@ -40,20 +54,30 @@ export const useClouds = () => {
     };
 
     setActiveClouds((currentVal) => [...currentVal, newCloud]);
-  }, [cloudsStock]);
+
+    return newCloud;
+  }, []);
 
   useEffect(() => {
+    console.log("destroyCloudById: ", destroyCloudById);
+    console.log("generateRandomCloud: ", generateRandomCloud);
+    console.log("isGeneratingClouds: ", isGeneratingClouds);
+    console.log("timeout: ", timeout);
+
     if (isGeneratingClouds) {
       intervalRef.current = setInterval(() => {
-        generateRandomCloud();
+        const cloud = generateRandomCloud();
+        destroyCloudById(cloud.id);
+        console.log("here: ");
       }, timeout);
+      console.log("intervalRef.current: ", intervalRef.current);
     }
 
     return () => {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
     };
-  }, [generateRandomCloud, isGeneratingClouds, timeout]);
+  }, [destroyCloudById, generateRandomCloud, isGeneratingClouds, timeout]);
 
   const startGenerateClouds = useCallback(() => {
     setIsGeneratingClouds(true);
@@ -86,18 +110,6 @@ export const useClouds = () => {
           return currentVal;
         });
         cb(value.length);
-      }
-    },
-    [activeClouds]
-  );
-
-  const destroyCloudById = useCallback(
-    (value, cb) => {
-      if (activeClouds.some((elem) => elem.id === value)) {
-        setActiveClouds((currentVal) =>
-          currentVal.filter((cloud) => cloud.id !== value)
-        );
-        cb();
       }
     },
     [activeClouds]

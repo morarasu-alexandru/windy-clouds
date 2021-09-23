@@ -58,12 +58,6 @@ function App() {
     resetClouds();
   }, [resetClouds, resetTimer, stopGenerateClouds]);
 
-  const autoDestroyCloud = useCallback((id) => {
-    destroyCloudById(id, () => {
-      console.log("auto destroyed: ");
-    });
-  });
-
   return (
     <main className="GameBoard">
       <section className="TimeSection">
@@ -87,10 +81,7 @@ function App() {
         </>
       )}
 
-      <CloudsSection
-        activeClouds={activeClouds}
-        autoDestroyCloud={autoDestroyCloud}
-      />
+      <CloudsSection activeClouds={activeClouds} />
 
       <label htmlFor="playerText">Cloud name: </label>
       <input
