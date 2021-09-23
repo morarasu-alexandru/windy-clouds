@@ -16,61 +16,60 @@ const generateRandomNumber = (max) => {
 const initialTimeout = 1500;
 
 export const useClouds = () => {
-  const [cloudsStock, setCloudsStock] = useState(initialClouds);
-  const [activeClouds, setActiveClouds] = useState([]);
   const [clouds, setClouds] = useState({ stock: initialClouds, active: [] });
+  const [cloudLifeTime, setCloudLifeTime] = useState(15000);
   const [isGeneratingClouds, setIsGeneratingClouds] = useState(false);
   const intervalRef = useRef(null);
   const [timeout, setTimeout] = useState(initialTimeout);
 
-  const destroyCloudById = useCallback((value) => {
-    setActiveClouds((currentValue) => {
-      if (currentValue.some((elem) => elem.id === value)) {
-        return currentValue.filter((cloud) => cloud.id !== value);
+  const destroyCloudById = useCallback((id) => {
+    setClouds((clouds) => {
+      const { stock, active } = clouds;
+
+      if (active.some((elem) => elem.id === id)) {
+        return {
+          stock,
+          active: active.filter((cloud) => cloud.id !== id),
+        };
       }
 
-      return currentValue;
+      return clouds;
     });
+  }, []);
+
+  const changeCloudLifeTime = useCallback((val) => {
+    setCloudLifeTime(val);
   }, []);
 
   const generateRandomCloud = useCallback(() => {
-    let randomIndex = null;
-    let cloudLabel = null;
+    setClouds(({ stock, active }) => {
+      const randomIndex = generateRandomNumber(stock.length - 1);
+      const cloudLabel = stock[randomIndex];
 
-    setCloudsStock((currentVal) => {
-      randomIndex = generateRandomNumber(currentVal.length - 1);
-      cloudLabel = currentVal[randomIndex];
+      const newStock =
+        stock.length === 1
+          ? initialClouds
+          : stock.filter((elem) => elem !== cloudLabel);
 
-      return currentVal.length === 1
-        ? initialClouds
-        : currentVal.filter((elem) => elem !== cloudLabel);
+      const newCloud = {
+        label: cloudLabel,
+        id: uuidv4(),
+        styleTop: generateRandomNumber(400),
+        lifeTime: cloudLifeTime,
+      };
+
+      return {
+        stock: newStock,
+        active: [...active, newCloud],
+      };
     });
-
-    const newCloud = {
-      label: cloudLabel,
-      id: uuidv4(),
-      styleTop: generateRandomNumber(400),
-      lifeTime: 15000,
-    };
-
-    setActiveClouds((currentVal) => [...currentVal, newCloud]);
-
-    return newCloud;
-  }, []);
+  }, [cloudLifeTime]);
 
   useEffect(() => {
-    console.log("destroyCloudById: ", destroyCloudById);
-    console.log("generateRandomCloud: ", generateRandomCloud);
-    console.log("isGeneratingClouds: ", isGeneratingClouds);
-    console.log("timeout: ", timeout);
-
     if (isGeneratingClouds) {
       intervalRef.current = setInterval(() => {
-        const cloud = generateRandomCloud();
-        destroyCloudById(cloud.id);
-        console.log("here: ");
+        generateRandomCloud();
       }, timeout);
-      console.log("intervalRef.current: ", intervalRef.current);
     }
 
     return () => {
@@ -88,32 +87,36 @@ export const useClouds = () => {
   }, []);
 
   const resetClouds = useCallback(() => {
-    setCloudsStock(initialClouds);
-    setActiveClouds([]);
+    setClouds({
+      stock: initialClouds,
+      active: [],
+    });
     setIsGeneratingClouds(false);
     intervalRef.current = null;
     clearInterval(intervalRef.current);
     setTimeout(initialTimeout);
   }, []);
 
-  const destroyCloudByLabel = useCallback(
-    (value, cb) => {
-      if (activeClouds.some((elem, idx) => elem.label === value)) {
-        setActiveClouds((currentVal) => {
-          const elemIdx = activeClouds.findIndex(
-            (elem) => elem.label === value
-          );
-          const newActiveClouds = [...activeClouds];
-          newActiveClouds.splice(elemIdx, 1);
-          currentVal.splice(elemIdx, 1);
+  const destroyCloudByLabel = useCallback((value, cb) => {
+    setClouds(({ stock, active }) => {
+      if (active.some((elem, idx) => elem.label === value)) {
+        const elemIdx = active.findIndex((elem) => elem.label === value);
 
-          return currentVal;
-        });
-        cb(value.length);
+        const newActiveClouds = [...active];
+        newActiveClouds.splice(elemIdx, 1);
+
+        return {
+          stock: stock,
+          active: newActiveClouds,
+        };
       }
-    },
-    [activeClouds]
-  );
+
+      return {
+        stock,
+        active,
+      };
+    });
+  }, []);
 
   return {
     resetClouds,
@@ -121,6 +124,8 @@ export const useClouds = () => {
     stopGenerateClouds,
     destroyCloudByLabel,
     destroyCloudById,
-    activeClouds,
+    activeClouds: clouds.active,
+    clouds,
+    changeCloudLifeTime,
   };
 };

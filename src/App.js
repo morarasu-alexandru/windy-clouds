@@ -12,6 +12,7 @@ function App() {
   let cb = () => {
     // console.log("tick: ");
   };
+
   const { seconds, minutes, startTimer, resetTimer, stopTimer } = useTimer(cb);
   const {
     startGenerateClouds,
@@ -19,10 +20,25 @@ function App() {
     activeClouds,
     resetClouds,
     destroyCloudByLabel,
+    clouds,
     destroyCloudById,
+    changeCloudLifeTime,
   } = useClouds();
   const [playerText, setPlayerText] = useState("");
   const [points, setPoints] = useState(0);
+  console.log("clouds: ", clouds);
+
+  const handlechangeCloudLifeTime1 = useCallback(() => {
+    changeCloudLifeTime(20000);
+  }, [changeCloudLifeTime]);
+
+  const handlechangeCloudLifeTime2 = useCallback(() => {
+    changeCloudLifeTime(10000);
+  }, [changeCloudLifeTime]);
+
+  const handlechangeCloudLifeTime3 = useCallback(() => {
+    changeCloudLifeTime(10000);
+  }, [changeCloudLifeTime]);
 
   const handlePlayerTextChange = useCallback((event) => {
     setPlayerText(event.target.value);
@@ -31,13 +47,16 @@ function App() {
   const handleClearPlayerText = useCallback((points) => {
     setPoints((currentVal) => currentVal + points);
     setPlayerText("");
-  });
+  }, []);
 
-  const handleKeyPress = useCallback((event) => {
-    if (event.which === enterKey) {
-      destroyCloudByLabel(playerText, handleClearPlayerText);
-    }
-  });
+  const handleKeyPress = useCallback(
+    (event) => {
+      if (event.which === enterKey) {
+        destroyCloudByLabel(playerText, handleClearPlayerText);
+      }
+    },
+    [destroyCloudByLabel, handleClearPlayerText, playerText]
+  );
 
   const handleStartGame = useCallback(() => {
     setIsGameStarted(true);
@@ -57,6 +76,10 @@ function App() {
     resetTimer();
     resetClouds();
   }, [resetClouds, resetTimer, stopGenerateClouds]);
+
+  const handleDestroyCloud = (id) => {
+    destroyCloudById(id);
+  };
 
   return (
     <main className="GameBoard">
@@ -81,7 +104,10 @@ function App() {
         </>
       )}
 
-      <CloudsSection activeClouds={activeClouds} />
+      <CloudsSection
+        activeClouds={activeClouds}
+        autoDestroyCloud={handleDestroyCloud}
+      />
 
       <label htmlFor="playerText">Cloud name: </label>
       <input
@@ -91,6 +117,9 @@ function App() {
         onChange={handlePlayerTextChange}
         onKeyPress={handleKeyPress}
       />
+      <button onClick={handlechangeCloudLifeTime1}>Wind speed 1</button>
+      <button onClick={handlechangeCloudLifeTime2}>Wind speed 2</button>
+      <button onClick={handlechangeCloudLifeTime3}>Wind speed 3</button>
     </main>
   );
 }

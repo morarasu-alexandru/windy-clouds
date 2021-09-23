@@ -1,12 +1,17 @@
 import React from "react";
 import Cloud from "./cloud";
 
-const CloudsSection = ({ activeClouds }) => {
+const CloudsSection = ({ activeClouds, autoDestroyCloud }) => {
   return (
     <section className="CloudsSection">
-      {activeClouds.map((cloud) => {
+      {activeClouds?.map((cloud) => {
         return (
-          <Cloud key={cloud.id} cloud={cloud} destroyAfter={cloud.lifeTime} />
+          <Cloud
+            key={cloud.id}
+            cloud={cloud}
+            destroyAfter={cloud.lifeTime}
+            autoDestroyCloud={autoDestroyCloud}
+          />
         );
       })}
     </section>
