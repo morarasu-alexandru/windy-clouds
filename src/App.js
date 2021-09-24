@@ -20,13 +20,11 @@ function App() {
     activeClouds,
     resetClouds,
     destroyCloudByLabel,
-    clouds,
     destroyCloudById,
     changeCloudLifeTime,
   } = useClouds();
   const [playerText, setPlayerText] = useState("");
   const [points, setPoints] = useState(0);
-  console.log("clouds: ", clouds);
 
   const handlechangeCloudLifeTime1 = useCallback(() => {
     changeCloudLifeTime(20000);
@@ -44,10 +42,13 @@ function App() {
     setPlayerText(event.target.value);
   }, []);
 
-  const handleClearPlayerText = useCallback((points) => {
-    setPoints((currentVal) => currentVal + points);
-    setPlayerText("");
-  }, []);
+  const handleClearPlayerText = useCallback(
+    (val) => {
+      setPoints(points + val);
+      setPlayerText("");
+    },
+    [points]
+  );
 
   const handleKeyPress = useCallback(
     (event) => {

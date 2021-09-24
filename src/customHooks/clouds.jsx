@@ -105,6 +105,10 @@ export const useClouds = () => {
         const newActiveClouds = [...active];
         newActiveClouds.splice(elemIdx, 1);
 
+        if (cb) {
+          cb(value.length);
+        }
+
         return {
           stock: stock,
           active: newActiveClouds,
