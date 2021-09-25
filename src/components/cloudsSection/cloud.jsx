@@ -1,18 +1,28 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 
-const Cloud = ({ cloud, destroyAfter, autoDestroyCloud }) => {
-  useEffect(() => {}, []);
+const Cloud = ({ cloud, destroyAfter, autoDestroyCloud, decreaseOneLive }) => {
+  const timeoutRef = useRef(true);
 
   const handleDestroy = useCallback(() => {
     autoDestroyCloud(cloud.id);
   }, [autoDestroyCloud, cloud.id]);
 
   useEffect(() => {
-    setTimeout(() => {
+    return () => {
+      console.log("here??? DSS DS?: ");
+
+      handleDestroy();
+      clearInterval(timeoutRef.current);
+    };
+  }, [handleDestroy]);
+
+  useEffect(() => {
+    timeoutRef.current = setTimeout(() => {
+      decreaseOneLive();
       handleDestroy();
     }, destroyAfter);
-  }, [destroyAfter, handleDestroy]);
+  }, [decreaseOneLive, destroyAfter, handleDestroy]);
 
   return (
     <motion.div

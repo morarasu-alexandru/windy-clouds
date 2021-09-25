@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
-export const useTimer = (cb) => {
+export const useTimer = () => {
   const [seconds, setSeconds] = useState(0);
   const [minutes, setMinutes] = useState(0);
   const intervalRef = useRef(null);
@@ -11,13 +11,9 @@ export const useTimer = (cb) => {
         setSeconds((currentVal) => {
           return currentVal + 1;
         });
-
-        if (cb) {
-          cb();
-        }
       }, 1000);
     }
-  }, [cb]);
+  }, []);
 
   const stopTimer = useCallback(() => {
     clearInterval(intervalRef.current);

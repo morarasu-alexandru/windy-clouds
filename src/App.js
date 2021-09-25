@@ -1,19 +1,23 @@
 import "./App.css";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import TimeLabel from "./components/timeLabel/timeLabel";
 import { useTimer } from "./customHooks/timer";
 import CloudsSection from "./components/cloudsSection/cloudsSection";
-import { useClouds } from "./customHooks/clouds";
+import { useClouds, WIND_SPEED } from "./customHooks/clouds";
+import { usePlayerStats } from "./customHooks/playerStats";
+import Box from "@mui/material/Box";
+import Slider from "@mui/material/Slider";
+import debounce from "lodash/debounce";
+import { ENTER_KEY } from "./customHooks/keyPress";
+import StartModal from "./components/startModal/startModal";
 
-const enterKey = 13;
+function valuetext(value) {
+  return `${value}°C`;
+}
 
 function App() {
   const [isGameStarted, setIsGameStarted] = useState(false);
-  let cb = () => {
-    // console.log("tick: ");
-  };
-
-  const { seconds, minutes, startTimer, resetTimer, stopTimer } = useTimer(cb);
+  const { seconds, minutes, startTimer, resetTimer, stopTimer } = useTimer();
   const {
     startGenerateClouds,
     stopGenerateClouds,
@@ -21,42 +25,38 @@ function App() {
     resetClouds,
     destroyCloudByLabel,
     destroyCloudById,
-    changeCloudLifeTime,
+    windSpeed,
+    changeWindSpeed,
+    changeCloudGeneratorCadence,
   } = useClouds();
   const [playerText, setPlayerText] = useState("");
-  const [points, setPoints] = useState(0);
-
-  const handlechangeCloudLifeTime1 = useCallback(() => {
-    changeCloudLifeTime(20000);
-  }, [changeCloudLifeTime]);
-
-  const handlechangeCloudLifeTime2 = useCallback(() => {
-    changeCloudLifeTime(10000);
-  }, [changeCloudLifeTime]);
-
-  const handlechangeCloudLifeTime3 = useCallback(() => {
-    changeCloudLifeTime(10000);
-  }, [changeCloudLifeTime]);
+  const {
+    points,
+    incrementPoints,
+    resetPoints,
+    lives,
+    resetLives,
+    decreaseOneLive,
+  } = usePlayerStats();
 
   const handlePlayerTextChange = useCallback((event) => {
     setPlayerText(event.target.value);
   }, []);
 
-  const handleClearPlayerText = useCallback(
-    (val) => {
-      setPoints(points + val);
-      setPlayerText("");
-    },
-    [points]
-  );
-
   const handleKeyPress = useCallback(
     (event) => {
-      if (event.which === enterKey) {
-        destroyCloudByLabel(playerText, handleClearPlayerText);
+      if (event.which === ENTER_KEY) {
+        if (activeClouds.some((elem, idx) => elem.label === playerText)) {
+          const cloud = activeClouds.find(
+            (cloud) => cloud.label === playerText
+          );
+          incrementPoints(playerText.length * cloud.pointsMultiplier);
+          destroyCloudByLabel(playerText);
+          setPlayerText("");
+        }
       }
     },
-    [destroyCloudByLabel, handleClearPlayerText, playerText]
+    [activeClouds, destroyCloudByLabel, incrementPoints, playerText]
   );
 
   const handleStartGame = useCallback(() => {
@@ -65,49 +65,79 @@ function App() {
     startGenerateClouds();
   }, [startGenerateClouds, startTimer]);
 
-  const handleStopGame = useCallback(() => {
+  const handleResetGame = useCallback(() => {
     stopTimer();
     stopGenerateClouds();
     setIsGameStarted(false);
-  }, [stopGenerateClouds, stopTimer]);
-
-  const handleResetGame = useCallback(() => {
-    setIsGameStarted(false);
-    stopGenerateClouds();
     resetTimer();
     resetClouds();
-  }, [resetClouds, resetTimer, stopGenerateClouds]);
+    resetLives();
+    resetPoints();
+  }, [
+    resetClouds,
+    resetLives,
+    resetPoints,
+    resetTimer,
+    stopGenerateClouds,
+    stopTimer,
+  ]);
 
-  const handleDestroyCloud = (id) => {
-    destroyCloudById(id);
-  };
+  const handleDestroyCloud = useCallback(
+    (id) => {
+      destroyCloudById(id);
+    },
+    [destroyCloudById]
+  );
+
+  const handleWindSpeedChange = debounce((event) => {
+    changeWindSpeed(event.target.value);
+  }, 40);
+
+  useEffect(() => {
+    changeCloudGeneratorCadence(minutes);
+  }, [changeCloudGeneratorCadence, minutes]);
+
+  console.log("activeClouds: ", activeClouds);
 
   return (
     <main className="GameBoard">
+      <StartModal
+        isGameStarted={isGameStarted}
+        handleStartGame={handleStartGame}
+      />
       <section className="TimeSection">
         Time: <TimeLabel value={minutes} /> : <TimeLabel value={seconds} />
       </section>
       <section className="SpeedControlSection">
         <div>Wind speed</div>
-        <div>slider</div>
+        <div>
+          <Box sx={{ width: 200 }}>
+            <Slider
+              value={windSpeed}
+              onChange={handleWindSpeedChange}
+              aria-label="Temperature"
+              defaultValue={WIND_SPEED.level1}
+              getAriaValueText={valuetext}
+              valueLabelDisplay="auto"
+              step={1}
+              marks
+              min={WIND_SPEED.level1}
+              max={WIND_SPEED.level3}
+            />
+          </Box>
+        </div>
       </section>
       <section className="StatsSection">
         <span>Points: {points}</span>
-        <span>Lives: 3</span>
+        <span>Lives: {lives}</span>
       </section>
 
-      {isGameStarted ? (
-        <button onClick={handleStopGame}>Stop Game</button>
-      ) : (
-        <>
-          <button onClick={handleStartGame}>Start/Resume</button>
-          <button onClick={handleResetGame}>Reset Game</button>
-        </>
-      )}
+      {isGameStarted && <button onClick={handleResetGame}>Stop Game</button>}
 
       <CloudsSection
         activeClouds={activeClouds}
         autoDestroyCloud={handleDestroyCloud}
+        decreaseOneLive={decreaseOneLive}
       />
 
       <label htmlFor="playerText">Cloud name: </label>
@@ -117,10 +147,8 @@ function App() {
         value={playerText}
         onChange={handlePlayerTextChange}
         onKeyPress={handleKeyPress}
+        autoComplete="off"
       />
-      <button onClick={handlechangeCloudLifeTime1}>Wind speed 1</button>
-      <button onClick={handlechangeCloudLifeTime2}>Wind speed 2</button>
-      <button onClick={handlechangeCloudLifeTime3}>Wind speed 3</button>
     </main>
   );
 }
