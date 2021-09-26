@@ -1,5 +1,5 @@
 import "./App.css";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import TimeLabel from "./components/timeLabel/timeLabel";
 import { useTimer } from "./customHooks/timer";
 import CloudsSection from "./components/cloudsSection/cloudsSection";
@@ -10,13 +10,11 @@ import Slider from "@mui/material/Slider";
 import debounce from "lodash/debounce";
 import { ENTER_KEY } from "./customHooks/keyPress";
 import StartModal from "./components/startModal/startModal";
-
-function valuetext(value) {
-  return `${value}°C`;
-}
+import { GAME_FAZE } from "./utils/constants";
+import EndModal from "./components/endModal/endModal";
 
 function App() {
-  const [isGameStarted, setIsGameStarted] = useState(false);
+  const [gameFaze, setGameFaze] = useState(GAME_FAZE.startGame);
   const { seconds, minutes, startTimer, resetTimer, stopTimer } = useTimer();
   const {
     startGenerateClouds,
@@ -30,6 +28,7 @@ function App() {
     changeCloudGeneratorCadence,
   } = useClouds();
   const [playerText, setPlayerText] = useState("");
+  const [finalPoints, setFinalPoints] = useState(null);
   const {
     points,
     incrementPoints,
@@ -60,20 +59,23 @@ function App() {
   );
 
   const handleStartGame = useCallback(() => {
-    setIsGameStarted(true);
+    setGameFaze(GAME_FAZE.runningGame);
     startTimer();
     startGenerateClouds();
+    setFinalPoints(null);
   }, [startGenerateClouds, startTimer]);
 
-  const handleResetGame = useCallback(() => {
+  const handleStopGame = useCallback(() => {
     stopTimer();
+    setFinalPoints(points);
     stopGenerateClouds();
-    setIsGameStarted(false);
+    setGameFaze(GAME_FAZE.endGame);
     resetTimer();
     resetClouds();
     resetLives();
     resetPoints();
   }, [
+    points,
     resetClouds,
     resetLives,
     resetPoints,
@@ -97,14 +99,29 @@ function App() {
     changeCloudGeneratorCadence(minutes);
   }, [changeCloudGeneratorCadence, minutes]);
 
-  console.log("activeClouds: ", activeClouds);
+  const isStartModalOpen = useMemo(() => {
+    return gameFaze === GAME_FAZE.startGame;
+  }, [gameFaze]);
+
+  const isEndModalOpen = useMemo(() => {
+    return gameFaze === GAME_FAZE.endGame;
+  }, [gameFaze]);
+
+  useEffect(() => {
+    if (lives === 0) {
+      handleStopGame();
+    }
+  }, [lives]);
 
   return (
     <main className="GameBoard">
-      <StartModal
-        isGameStarted={isGameStarted}
+      <StartModal isOpen={isStartModalOpen} handleStartGame={handleStartGame} />
+      <EndModal
+        isOpen={isEndModalOpen}
+        points={finalPoints}
         handleStartGame={handleStartGame}
       />
+
       <section className="TimeSection">
         Time: <TimeLabel value={minutes} /> : <TimeLabel value={seconds} />
       </section>
@@ -117,7 +134,6 @@ function App() {
               onChange={handleWindSpeedChange}
               aria-label="Temperature"
               defaultValue={WIND_SPEED.level1}
-              getAriaValueText={valuetext}
               valueLabelDisplay="auto"
               step={1}
               marks
@@ -132,7 +148,9 @@ function App() {
         <span>Lives: {lives}</span>
       </section>
 
-      {isGameStarted && <button onClick={handleResetGame}>Stop Game</button>}
+      {gameFaze === GAME_FAZE.runningGame && (
+        <button onClick={handleStopGame}>Stop Game</button>
+      )}
 
       <CloudsSection
         activeClouds={activeClouds}

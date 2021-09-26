@@ -6,8 +6,40 @@ const initialClouds = [
   "html",
   "css",
   "javascript",
-  "responsive design",
+  "design",
   "react",
+  "cache",
+  "cookies",
+  "classes",
+  "frameworks",
+  "navigation",
+  "page",
+  "sitemap",
+  "wireframe",
+  "server",
+  "cdn",
+  "dns",
+  "http",
+  "https",
+  "functions",
+  "const",
+  "let",
+  "api",
+  "request",
+  "get",
+  "post",
+  "put",
+  "delete",
+  "typescript",
+  "ajax",
+  "sass",
+  "less",
+  "npm",
+  "yarn",
+  "preact",
+  "d3",
+  "bem",
+  "webpack",
 ];
 
 const generateRandomNumber = (max) => {
@@ -46,7 +78,7 @@ const pointsBalancerMultiplier = (windSpeed) => {
       return 1;
   }
 };
-const cloudGeneratorCadenceInitial = 1500;
+const cloudGeneratorCadenceInitial = 1300;
 
 const cadenceBalancerMultiplier = (passedMinutes) => {
   if (passedMinutes === 0) {
