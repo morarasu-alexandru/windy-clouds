@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import ModalCustom from "../modalCustom/modalCustom";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import CardActionArea from "@mui/material/CardActionArea";
 import Button from "@mui/material/Button";
 import CardActions from "@mui/material/CardActions";
+import { GameContext } from "../../context/gameContext";
 
-const EndModal = ({ isOpen, points, handleStartGame }) => {
+const EndModal = () => {
+  const { isEndModalOpen, points, handleStartGame } = useContext(GameContext);
+
   return (
-    <ModalCustom isOpen={isOpen}>
+    <ModalCustom isOpen={isEndModalOpen}>
       <CardActionArea>
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">

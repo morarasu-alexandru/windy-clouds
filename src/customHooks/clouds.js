@@ -11,7 +11,7 @@ const initialClouds = [
   "cache",
   "cookies",
   "classes",
-  "frameworks",
+  "framework",
   "navigation",
   "page",
   "sitemap",
@@ -91,7 +91,10 @@ const cadenceBalancerMultiplier = (passedMinutes) => {
 };
 
 export const useClouds = () => {
-  const [clouds, setClouds] = useState({ stock: initialClouds, active: [] });
+  const [clouds, setClouds] = useState({
+    stock: initialClouds,
+    active: [],
+  });
   const [windSpeed, setWindSpeed] = useState(WIND_SPEED.level1);
   const [cloudLifeTime, setCloudLifeTime] = useState(baseCloudLife);
   const [isGeneratingClouds, setIsGeneratingClouds] = useState(false);
@@ -221,7 +224,6 @@ export const useClouds = () => {
   }, []);
 
   useEffect(() => {
-    console.log("isGeneratingClouds: ", isGeneratingClouds);
     if (isGeneratingCloudsRef.current) {
       intervalRef.current = setInterval(() => {
         generateRandomCloud();
@@ -243,6 +245,10 @@ export const useClouds = () => {
     setCloudLifeTime(baseCloudLife * windBalancerMultiplier(windSpeed));
   }, [windSpeed]);
 
+  const activeClouds = useMemo(() => {
+    return clouds.active;
+  }, [clouds.active]);
+
   return useMemo(
     () => ({
       resetClouds,
@@ -250,7 +256,7 @@ export const useClouds = () => {
       stopGenerateClouds,
       destroyCloudByLabel,
       destroyCloudById,
-      activeClouds: clouds.active,
+      activeClouds: activeClouds,
       windSpeed,
       changeWindSpeed,
       changeCloudGeneratorCadence,
@@ -261,7 +267,7 @@ export const useClouds = () => {
       stopGenerateClouds,
       destroyCloudByLabel,
       destroyCloudById,
-      clouds.active,
+      activeClouds,
       windSpeed,
       changeWindSpeed,
       changeCloudGeneratorCadence,

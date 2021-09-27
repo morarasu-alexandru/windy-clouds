@@ -10,8 +10,6 @@ const Cloud = ({ cloud, destroyAfter, autoDestroyCloud, decreaseOneLive }) => {
 
   useEffect(() => {
     return () => {
-      console.log("here??? DSS DS?: ");
-
       handleDestroy();
       clearInterval(timeoutRef.current);
     };

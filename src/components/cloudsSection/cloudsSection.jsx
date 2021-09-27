@@ -1,26 +1,28 @@
-import React, { memo } from "react";
+import React, { memo, useContext } from "react";
 import Cloud from "./cloud";
+import { GameContext } from "../../context/gameContext";
 
-const CloudsSection = memo(
-  ({ activeClouds, autoDestroyCloud, decreaseOneLive }) => {
-    console.log("activeClouds: ", activeClouds);
+const CloudsSection = memo(() => {
+  const { activeClouds, handleDestroyCloud, decreaseOneLive } =
+    useContext(GameContext);
 
-    return (
-      <section className="CloudsSection">
-        {activeClouds?.map((cloud) => {
-          return (
-            <Cloud
-              key={cloud.id}
-              cloud={cloud}
-              destroyAfter={cloud.lifeTime}
-              autoDestroyCloud={autoDestroyCloud}
-              decreaseOneLive={decreaseOneLive}
-            />
-          );
-        })}
-      </section>
-    );
-  }
-);
+  console.log("activeClouds: ", activeClouds);
+
+  return (
+    <section className="CloudsSection">
+      {activeClouds?.map((cloud) => {
+        return (
+          <Cloud
+            key={cloud.id}
+            cloud={cloud}
+            destroyAfter={cloud.lifeTime}
+            autoDestroyCloud={handleDestroyCloud}
+            decreaseOneLive={decreaseOneLive}
+          />
+        );
+      })}
+    </section>
+  );
+});
 
 export default CloudsSection;

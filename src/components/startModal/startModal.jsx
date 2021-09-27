@@ -1,21 +1,17 @@
-import React, { useCallback } from "react";
-import Box from "@mui/material/Box";
+import React, { useCallback, useContext } from "react";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
-import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardActionArea from "@mui/material/CardActionArea";
 import CardActions from "@mui/material/CardActions";
 import ModalCustom from "../modalCustom/modalCustom";
+import { GameContext } from "../../context/gameContext";
 
-const StartModal = ({ handleStartGame, isOpen }) => {
-  const handleStart = useCallback(() => {
-    handleStartGame();
-  }, [handleStartGame]);
+const StartModal = () => {
+  const { handleStartGame, isStartModalOpen } = useContext(GameContext);
 
   return (
-    <ModalCustom isOpen={isOpen}>
+    <ModalCustom isOpen={isStartModalOpen}>
       <>
         <CardActionArea>
           <CardContent>
@@ -32,7 +28,11 @@ const StartModal = ({ handleStartGame, isOpen }) => {
           </CardContent>
         </CardActionArea>
         <CardActions>
-          <Button onClick={handleStart} variant={"contained"} color="primary">
+          <Button
+            onClick={handleStartGame}
+            variant={"contained"}
+            color="primary"
+          >
             Start
           </Button>
         </CardActions>
