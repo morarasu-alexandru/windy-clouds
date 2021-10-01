@@ -8,7 +8,8 @@ import CardActions from "@mui/material/CardActions";
 import { GameContext } from "../../context/gameContext";
 
 const EndModal = () => {
-  const { isEndModalOpen, points, handleStartGame } = useContext(GameContext);
+  const { isEndModalOpen, finalPoints, handleStartGame } =
+    useContext(GameContext);
 
   return (
     <ModalCustom isOpen={isEndModalOpen}>
@@ -18,7 +19,7 @@ const EndModal = () => {
             End Game
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Total number of points: {points}
+            Total number of points: {finalPoints}
           </Typography>
         </CardContent>
       </CardActionArea>
