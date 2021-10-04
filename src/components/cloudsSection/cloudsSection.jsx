@@ -1,6 +1,7 @@
 import React, { memo, useContext } from "react";
 import Cloud from "./cloud";
 import { GameContext } from "../../context/gameContext";
+import style from "./cloudsSection.module.scss";
 
 const CloudsSection = memo(() => {
   const { activeClouds, handleDestroyCloud, decreaseOneLive } =
@@ -9,7 +10,7 @@ const CloudsSection = memo(() => {
   console.log("activeClouds: ", activeClouds);
 
   return (
-    <section className="CloudsSection">
+    <section className={style.CloudsSection}>
       {activeClouds?.map((cloud) => {
         return (
           <Cloud

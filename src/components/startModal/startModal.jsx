@@ -6,6 +6,7 @@ import CardActionArea from "@mui/material/CardActionArea";
 import CardActions from "@mui/material/CardActions";
 import ModalCustom from "../modalCustom/modalCustom";
 import { GameContext } from "../../context/gameContext";
+import style from "./startModal.module.scss";
 
 const StartModal = () => {
   const { handleStartGame, isStartModalOpen } = useContext(GameContext);
@@ -13,15 +14,34 @@ const StartModal = () => {
   return (
     <ModalCustom isOpen={isStartModalOpen}>
       <>
-        <CardActionArea>
-          <CardContent>
-            <Typography gutterBottom variant="h5" component="div">
+        <CardActionArea classes={{ root: style.cardActionArea }}>
+          <CardContent classes={{ root: style.cardContent }}>
+            <Typography
+              classes={{ root: style.cardTitle }}
+              gutterBottom
+              variant="h5"
+              component="div"
+            >
               Windy clouds game
             </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Type the text from the clouds and hit enter
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              align={"center"}
+              classes={{
+                root: style.text,
+              }}
+            >
+              Type the text from the clouds and hit enter.
             </Typography>
-            <Typography variant="body2" color="text.secondary">
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              align={"center"}
+              classes={{
+                root: style.text,
+              }}
+            >
               You can change the speed of the clouds with up and down arrows.
               You win extra points for clouds that have increased speed.
             </Typography>
@@ -31,7 +51,10 @@ const StartModal = () => {
           <Button
             onClick={handleStartGame}
             variant={"contained"}
-            color="primary"
+            // color="primary"
+            classes={{
+              root: style.button,
+            }}
           >
             Start
           </Button>

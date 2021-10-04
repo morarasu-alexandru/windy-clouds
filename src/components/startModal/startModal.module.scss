@@ -1,0 +1,36 @@
+@import "src/style";
+
+.cardTitle.cardTitle {
+  font-size: 30px;
+  font-family: $primaryFont;
+  text-transform: uppercase;
+  align-self: center;
+
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    background-color: $teaGreen;
+  }
+}
+
+.button.button {
+  background-color: $lightPink;
+  color: #000000;
+  font-family: $primaryFont;
+  font-size: 20px;
+  width: 150px;
+
+  &:hover {
+    background-color: $maximumBluePurple;
+  }
+}
+
+.text.text {
+  font-family: $primaryFont;
+  font-size: 20px;
+  color: #000000;
+}

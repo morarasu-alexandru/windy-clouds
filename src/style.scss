@@ -1,0 +1,26 @@
+.CloudElement {
+    background-image: url("./img/png-clipart-blue-clouds-baiyun-clouds-removebg-preview.png");
+}
+
+
+$lightPink: #FFADAD;
+$deepChampagne: #FFD6A5;
+$lemonYellowCrayola: #FDFFB6;
+$teaGreen: #CAFFBF;
+$celeste: #9BF6FF;
+$babyBlueEyes: #A0C4FF;
+$maximumBluePurple: #BDB2FF;
+$mauve: #FFC6FF;
+$babyPowder: #FFFFFC;
+
+
+
+$primaryFont: 'Acme', sans-serif;
+
+
+#root {
+    height: 100vh;
+    background-color: $babyBlueEyes;
+    display: flex;
+    align-items: center;
+}

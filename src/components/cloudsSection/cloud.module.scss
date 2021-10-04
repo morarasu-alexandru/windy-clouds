@@ -1,0 +1,26 @@
+@import "src/style";
+
+.CloudElement {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center 10%;
+  text-align: center;
+  vertical-align: baseline;
+  margin-left: -130px;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+
+.CloudElementText {
+  line-height: 5.6em;
+  min-width: 120px;
+  white-space: nowrap;
+  font-family: $primaryFont;
+  display: flex;
+  justify-content: center;
+}
