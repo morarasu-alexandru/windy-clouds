@@ -59,6 +59,9 @@ const Game = () => {
                 marks
                 min={WIND_SPEED.level1}
                 max={WIND_SPEED.level3}
+                classes={{
+                  root: style.slider,
+                }}
               />
             </Box>
           </div>

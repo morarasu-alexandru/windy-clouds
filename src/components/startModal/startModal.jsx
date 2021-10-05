@@ -51,7 +51,6 @@ const StartModal = () => {
           <Button
             onClick={handleStartGame}
             variant={"contained"}
-            // color="primary"
             classes={{
               root: style.button,
             }}
