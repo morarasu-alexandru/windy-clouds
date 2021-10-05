@@ -33,6 +33,11 @@
   font-size: 18px
 }
 
+.statsLivesLabel.statsLivesLabel {
+  margin-right: 5px;
+  //display: inline-block;
+}
+
 .timeSection, .speedControlSection, .statsSection {
   margin-right: 30px;
 }
@@ -83,4 +88,12 @@
 
 .slider.slider {
   color: $lemonYellowCrayola;
+}
+
+.favoriteIcon.favoriteIcon {
+  display: inline-block;
+  font-size: 1.25em;
+  line-height: 1.25em;
+  fill: $lemonYellowCrayola;
+  margin-bottom: -5px;
 }

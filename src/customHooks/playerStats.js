@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 
-const initialLives = 5;
+const initialLives = 12;
 
 export const usePlayerStats = () => {
   const [points, setPoints] = useState(0);

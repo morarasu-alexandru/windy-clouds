@@ -10,6 +10,7 @@ import { WIND_SPEED } from "../../customHooks/clouds";
 import { GAME_FAZE } from "../../utils/constants";
 import style from "./game.module.scss";
 import Cloud from "../cloudsSection/cloud";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 const Game = () => {
   const {
@@ -60,7 +61,20 @@ const Game = () => {
         </section>
         <section className={style.statsSection}>
           <span className={style.statsPoints}>Points: {points}</span>
-          <span className={style.statsLives}>Lives: {lives}</span>
+          <span className={style.statsLives}>
+            <span className={style.statsLivesLabel}>Lives:</span>
+            {lives < 13 ? (
+              <>
+                {[...Array(lives)].map((e, i) => {
+                  return (
+                    <FavoriteIcon classes={{ root: style.favoriteIcon }} />
+                  );
+                })}
+              </>
+            ) : (
+              <span> {lives}</span>
+            )}
+          </span>
         </section>
         {gameFaze === GAME_FAZE.runningGame && (
           <button className={style.button} onClick={handleStopGame}>

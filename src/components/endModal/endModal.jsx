@@ -21,27 +21,25 @@ const EndModal = ({ inputRef }) => {
 
   return (
     <ModalCustom isOpen={isEndModalOpen}>
-      <CardActionArea>
-        <CardContent classes={{ root: style.cardContent }}>
-          <Typography
-            gutterBottom
-            variant="h5"
-            component="div"
-            classes={{ root: style.cardTitle }}
-          >
-            End Game
-          </Typography>
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            classes={{
-              root: style.text,
-            }}
-          >
-            Total number of points: {finalPoints}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
+      <CardContent classes={{ root: style.cardContent }}>
+        <Typography
+          gutterBottom
+          variant="h5"
+          component="div"
+          classes={{ root: style.cardTitle }}
+        >
+          End Game
+        </Typography>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          classes={{
+            root: style.text,
+          }}
+        >
+          Total number of points: {finalPoints}
+        </Typography>
+      </CardContent>
       <CardActions>
         <Button
           classes={{
