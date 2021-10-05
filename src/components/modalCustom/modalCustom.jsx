@@ -2,17 +2,32 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Modal from "@mui/material/Modal";
+import style from "./modalCustom.module.scss";
 
-const style = {
+// const styleBox = {
+//   //   // position: "absolute",
+//   //   // top: "50%",
+//   //   // left: "50%",
+//   //   // transform: "translate(-50%, -50%)",
+//   //   // width: 400,
+//   //   // bgcolor: "background.paper",
+//   //   // border: "none",
+//   //   // outline: "none",
+//   //   // boxShadow: 24,
+//   //   // p: 4,
+// };
+
+const styleCard = {
+  // maxWidth: 345,
+
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
+  border: "none",
+  outline: "none",
   boxShadow: 24,
-  p: 4,
 };
 
 const ModalCustom = ({ isOpen, children }) => {
@@ -21,10 +36,26 @@ const ModalCustom = ({ isOpen, children }) => {
       open={isOpen}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
+      className={"test"}
+      classes={{
+        root: style.modalWrapper,
+      }}
+      BackdropProps={{
+        classes: {
+          root: style.backdropModal,
+        },
+      }}
     >
-      <Box sx={style}>
-        <Card sx={{ maxWidth: 345 }}>{children}</Card>
-      </Box>
+      {/*<Box sx={styleBox}>*/}
+      <Card
+        sx={styleCard}
+        classes={{
+          root: style.card,
+        }}
+      >
+        {children}
+      </Card>
+      {/*</Box>*/}
     </Modal>
   );
 };

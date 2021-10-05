@@ -1,0 +1,16 @@
+@import "src/style";
+
+.backdropModal.backdropModal {
+  opacity: 0.5!important;
+}
+
+.card.card {
+  background-color: $teaGreen;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 20px;
+}
+

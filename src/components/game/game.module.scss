@@ -1,0 +1,85 @@
+@import "src/style";
+
+.GameBoard {
+  width: 1100px;
+  background-image: linear-gradient(to bottom, #ffadad, #ffa9bb, #fba7cb, #f0a8dc, #dfabed, #c9b5f9, #b3bfff, #a0c7ff, #95d4ff, #90e0ff, #91ecff, #9bf6ff);
+  margin: 0 auto;
+  border-radius: 20px;
+  box-shadow: 0px 11px 15px -7px rgb(0 0 0 / 20%), 0px 24px 38px 3px rgb(0 0 0 / 14%), 0px 9px 46px 8px rgb(0 0 0 / 12%);
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+  padding: 10px 20px 0 20px;
+  align-items: center;
+}
+
+.speedControlSection {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.sliderText {
+  margin-right: 20px;
+}
+
+
+.timeSection, .sliderText, .statsPoints, .statsLives, .inputLabel, .button {
+  font-family: $primaryFont;
+  font-size: 18px
+}
+
+.timeSection, .speedControlSection, .statsSection {
+  margin-right: 30px;
+}
+
+.timeSection {
+  width: 100px;
+}
+
+.statsPoints {
+  margin-right: 30px;
+}
+
+.inputContainer {
+  padding: 0 10px 10px 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.inputLabel {
+  margin-right: 15px;
+}
+
+.inputField, .inputLabel {
+  font-size: 25px;
+}
+
+.inputField {
+  border-radius: 5px;
+  border: 1px solid $deepChampagne;
+
+  &:focus {
+    outline-color: $lightPink;
+  }
+}
+
+.button {
+  margin-left: auto;
+  background-color: $teaGreen;
+  border: none;
+  border-radius: 5px;
+  box-sizing: border-box;
+  padding: 10px 15px;
+
+  &:hover {
+    background-color: $mauve;
+  }
+}
+
+.slider.slider {
+  color: $lemonYellowCrayola;
+}
