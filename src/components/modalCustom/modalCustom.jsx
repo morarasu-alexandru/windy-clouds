@@ -36,7 +36,6 @@ const ModalCustom = ({ isOpen, children }) => {
       open={isOpen}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
-      className={"test"}
       classes={{
         root: style.modalWrapper,
       }}

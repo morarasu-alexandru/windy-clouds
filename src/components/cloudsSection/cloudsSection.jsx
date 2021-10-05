@@ -7,8 +7,6 @@ const CloudsSection = memo(() => {
   const { activeClouds, handleDestroyCloud, decreaseOneLive } =
     useContext(GameContext);
 
-  console.log("activeClouds: ", activeClouds);
-
   return (
     <section className={style.CloudsSection}>
       {activeClouds?.map((cloud) => {

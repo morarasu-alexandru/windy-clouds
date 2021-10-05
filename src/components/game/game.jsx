@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from "react";
+import React, { useContext, useMemo, useRef } from "react";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 import StartModal from "../startModal/startModal";
@@ -26,20 +26,12 @@ const Game = () => {
     handlePlayerTextChange,
   } = useContext(GameContext);
 
-  const testCloud = useMemo(
-    () => ({
-      label: "test",
-      id: "random",
-      style: Math.floor(Math.random() * 500),
-      lifetime: 60000,
-      pointsMultiplier: 10,
-    }),
-    []
-  );
+  const inputRef = useRef(null);
+
   return (
     <main className={style.GameBoard}>
-      <StartModal />
-      <EndModal />
+      <StartModal inputRef={inputRef} />
+      <EndModal inputRef={inputRef} />
 
       <header className={style.header}>
         <section className={style.timeSection}>
@@ -78,18 +70,14 @@ const Game = () => {
       </header>
 
       <CloudsSection />
-      <div style={{ marginLeft: "190px" }}>
-        <Cloud
-          cloud={testCloud}
-          decreaseOneLive={() => {}}
-          autoDestroyCloud={() => {}}
-        />
-      </div>
+
       <div className={style.inputContainer}>
         <label className={style.inputLabel} htmlFor="playerText">
           Cloud name:{" "}
         </label>
         <input
+          autoFocus
+          ref={inputRef}
           id="playerText"
           className={style.inputField}
           type="text"

@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useCallback, useContext } from "react";
 import ModalCustom from "../modalCustom/modalCustom";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
@@ -8,9 +8,16 @@ import CardActions from "@mui/material/CardActions";
 import { GameContext } from "../../context/gameContext";
 import style from "../endModal/endModal.module.scss";
 
-const EndModal = () => {
+const EndModal = ({ inputRef }) => {
   const { isEndModalOpen, finalPoints, handleStartGame } =
     useContext(GameContext);
+
+  const onHandleStart = useCallback(() => {
+    handleStartGame();
+    setTimeout(() => {
+      inputRef.current.focus();
+    });
+  }, [handleStartGame, inputRef]);
 
   return (
     <ModalCustom isOpen={isEndModalOpen}>
@@ -40,7 +47,7 @@ const EndModal = () => {
           classes={{
             root: style.button,
           }}
-          onClick={handleStartGame}
+          onClick={onHandleStart}
           variant={"contained"}
           color="primary"
         >
