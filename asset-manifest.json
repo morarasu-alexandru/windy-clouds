@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/windy-clouds/static/css/main.0062c778.chunk.css",
+    "main.css": "/windy-clouds/static/css/main.cb5932f0.chunk.css",
     "main.js": "/windy-clouds/static/js/main.8edea4a3.chunk.js",
     "main.js.map": "/windy-clouds/static/js/main.8edea4a3.chunk.js.map",
     "runtime-main.js": "/windy-clouds/static/js/runtime-main.04837936.js",
@@ -10,14 +10,14 @@
     "static/js/3.a6cfd1b8.chunk.js": "/windy-clouds/static/js/3.a6cfd1b8.chunk.js",
     "static/js/3.a6cfd1b8.chunk.js.map": "/windy-clouds/static/js/3.a6cfd1b8.chunk.js.map",
     "index.html": "/windy-clouds/index.html",
-    "static/css/main.0062c778.chunk.css.map": "/windy-clouds/static/css/main.0062c778.chunk.css.map",
+    "static/css/main.cb5932f0.chunk.css.map": "/windy-clouds/static/css/main.cb5932f0.chunk.css.map",
     "static/js/2.c0a81358.chunk.js.LICENSE.txt": "/windy-clouds/static/js/2.c0a81358.chunk.js.LICENSE.txt",
     "static/media/style.scss": "/windy-clouds/static/media/png-clipart-blue-clouds-baiyun-clouds-removebg-preview.da2046ee.png"
   },
   "entrypoints": [
     "static/js/runtime-main.04837936.js",
     "static/js/2.c0a81358.chunk.js",
-    "static/css/main.0062c778.chunk.css",
+    "static/css/main.cb5932f0.chunk.css",
     "static/js/main.8edea4a3.chunk.js"
   ]
 }
