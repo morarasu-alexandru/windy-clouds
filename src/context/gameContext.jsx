@@ -12,7 +12,9 @@ import { usePlayerStats } from "../customHooks/playerStats";
 import { ENTER_KEY } from "../customHooks/keyPress";
 import debounce from "lodash/debounce";
 
-export const GameContext = createContext();
+export const GameContext = createContext({
+  hasInputError: false,
+});
 
 const { Provider } = GameContext;
 
@@ -40,9 +42,11 @@ export const GameContextProvider = (props) => {
     resetLives,
     decreaseOneLive,
   } = usePlayerStats();
+  const [hasInputError, setHasInputError] = useState(false);
 
   const handlePlayerTextChange = useCallback((event) => {
     setPlayerText(event.target.value);
+    setHasInputError(false);
   }, []);
 
   const handleKeyPress = useCallback(
@@ -54,6 +58,11 @@ export const GameContextProvider = (props) => {
           );
           incrementPoints(playerText.length * cloud.pointsMultiplier);
           destroyCloudByLabel(playerText);
+          setPlayerText("");
+        } else {
+          console.log("error: ");
+
+          setHasInputError(true);
           setPlayerText("");
         }
       }
@@ -143,6 +152,7 @@ export const GameContextProvider = (props) => {
       handlePlayerTextChange,
       handleKeyPress,
       handleStartGame,
+      hasInputError,
     }),
     [
       isStartModalOpen,
@@ -170,6 +180,7 @@ export const GameContextProvider = (props) => {
       handlePlayerTextChange,
       handleKeyPress,
       handleStartGame,
+      hasInputError,
     ]
   );
 

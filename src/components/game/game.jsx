@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useRef } from "react";
+import React, { useContext, useRef } from "react";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
 import StartModal from "../startModal/startModal";
@@ -9,7 +9,6 @@ import { GameContext } from "../../context/gameContext";
 import { WIND_SPEED } from "../../customHooks/clouds";
 import { GAME_FAZE } from "../../utils/constants";
 import style from "./game.module.scss";
-import Cloud from "../cloudsSection/cloud";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 
 const Game = () => {
@@ -25,6 +24,7 @@ const Game = () => {
     playerText,
     handleKeyPress,
     handlePlayerTextChange,
+    hasInputError,
   } = useContext(GameContext);
 
   const inputRef = useRef(null);
@@ -67,7 +67,10 @@ const Game = () => {
               <>
                 {[...Array(lives)].map((e, i) => {
                   return (
-                    <FavoriteIcon classes={{ root: style.favoriteIcon }} />
+                    <FavoriteIcon
+                      key={i}
+                      classes={{ root: style.favoriteIcon }}
+                    />
                   );
                 })}
               </>
@@ -85,7 +88,11 @@ const Game = () => {
 
       <CloudsSection />
 
-      <div className={style.inputContainer}>
+      <div
+        className={`${style.inputContainer} ${
+          hasInputError && style[`inputContainer--hasError`]
+        }`}
+      >
         <label className={style.inputLabel} htmlFor="playerText">
           Cloud name:{" "}
         </label>

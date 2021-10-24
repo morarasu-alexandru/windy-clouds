@@ -2,7 +2,6 @@ import React, { useCallback, useContext } from "react";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import CardContent from "@mui/material/CardContent";
-import CardActionArea from "@mui/material/CardActionArea";
 import CardActions from "@mui/material/CardActions";
 import ModalCustom from "../modalCustom/modalCustom";
 import { GameContext } from "../../context/gameContext";

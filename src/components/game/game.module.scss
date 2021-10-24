@@ -56,6 +56,10 @@
   padding: 0 10px 10px 20px;
   display: flex;
   justify-content: center;
+
+  &--hasError input {
+    background: rgb(246, 224, 224);
+  }
 }
 
 .inputLabel {
