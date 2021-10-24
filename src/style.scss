@@ -3,6 +3,11 @@
 }
 
 
+@font-face {
+    font-family: 'Acme';
+    src: local('Acme'), url(fonts/acme.woff2) format('woff');
+}
+
 $lightPink: #FFADAD;
 $deepChampagne: #FFD6A5;
 $lemonYellowCrayola: #FDFFB6;
@@ -13,10 +18,7 @@ $maximumBluePurple: #BDB2FF;
 $mauve: #FFC6FF;
 $babyPowder: #FFFFFC;
 
-
-
 $primaryFont: 'Acme', sans-serif;
-
 
 #root {
     height: 100vh;
